@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+<!--====================== HERENCIA FORM VIEW =======================-->
+    <record model="ir.ui.view" id="view_mode_form_inherit_argi1" >
+        <field name="name">stock.move.form.inherit</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_form" />
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="cost_total" />
+            </field>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_mode_tree_inherit_argi1" >
+        <field name="name">stock.move.tree.inherit</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_tree" />
+        <field name="arch" type="xml">
+            <field name="product_qty" position="after">
+                <field name="cost_total" />
+            </field>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_inventory_form_inherit_argi1" >
+        <field name="name">stock.inventory.tree.inherit</field>
+        <field name="model">stock.inventory</field>
+        <field name="inherit_id" ref="stock.view_inventory_form" />
+        <field name="arch" type="xml">
+            <field name="move_ids" position="after">
+                <group class="oe_subtotal_footer oe_right">
+                    <field name="cost_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    
+                </group>
+                <group colspan="4">
+                </group>
+                <newline/>
+                <newline/>
+            </field>
+            <xpath expr="//field[@name='move_ids']/tree/field[@name='product_qty']" position="after">
+                <field name="cost_total"/>
+            </xpath> 
+        </field>
+    </record>
+
+    </data>
+</openerp>
