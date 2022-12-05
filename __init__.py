@@ -1,2 +1,3 @@
 # -*- coding: utf-8 -*-
-import stock
+
+from . import extra_fits

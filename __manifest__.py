@@ -14,6 +14,7 @@
     'depends': ['base','sale','account'],
     'data': [
         'extra_fit_views.xml',
+        'security/ir.model.access.csv',
     ],
     'installable': True,
     'active': False,

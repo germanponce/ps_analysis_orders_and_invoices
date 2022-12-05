@@ -1,50 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
-    <data>
+<odoo>
+    <data>        
         
-<!--====================== HERENCIA FORM VIEW =======================-->
-    <record model="ir.ui.view" id="view_mode_form_inherit_argi1" >
-        <field name="name">stock.move.form.inherit</field>
-        <field name="model">stock.move</field>
-        <field name="inherit_id" ref="stock.view_move_form" />
+        
+    <record id="invoice_sale_analysis_total_search" model="ir.ui.view">
+        <field name="name">invoice.sale.analysis.total.search</field>
+        <field name="model">invoice.sale.analysis.total</field>
         <field name="arch" type="xml">
-            <field name="name" position="after">
-                <field name="cost_total" />
-            </field>
+            <search string="Analisis de Ventas vs Facturas">
+                <field name="name"/>
+                <field name="date_order"/>
+                <field name="customer_name"/>
+                <field name="invoice_name"/>
+                <field name="date_invoice"/>
+                <group expand="1" string="Agrupar por">
+                    <filter string="Fecha Venta" name="gp_date_order" context="{'group_by':'date_order'}"/>
+                    <filter string="Cliente" name="gp_customer_name" context="{'group_by':'customer_name'}"/>
+                    <filter string="Fecha Factura" name="gp_date_invoice" context="{'group_by':'date_invoice'}"/>
+                </group>
+            </search>
         </field>
     </record>
 
-    <record model="ir.ui.view" id="view_mode_tree_inherit_argi1" >
-        <field name="name">stock.move.tree.inherit</field>
-        <field name="model">stock.move</field>
-        <field name="inherit_id" ref="stock.view_move_tree" />
-        <field name="arch" type="xml">
-            <field name="product_qty" position="after">
-                <field name="cost_total" />
-            </field>
-        </field>
+
+        <!-- invoice.sale.analysis.total -->
+        <record id="invoice_sale_analysis_total_tree" model="ir.ui.view">
+          <field name="name">invoice.sale.analysis.total.tree</field>
+          <field name="model">invoice.sale.analysis.total</field>
+          <field name="type">tree</field>
+          <field name="arch" type="xml">
+            <tree string="Analisis de Ventas vs Facturas" create="false">
+              <field name="name" />
+              <field name="date_order" />
+              <field name="so_amount_total" sum="Total SO" />
+              <field name="customer_name" />
+              <field name="invoice_name" />
+              <field name="date_invoice" />
+              <field name="inv_amount_total" sum="Total Inv"/>
+              <field name="pend_amount_total" sum="Total Pendiente"/>
+            </tree>
+          </field>
+        </record>
+        
+    <record id="invoice_sale_analysis_total_action" model="ir.actions.act_window">
+        <field name="name">Analisis de Ventas vs Facturas</field>
+        <field name="res_model">invoice.sale.analysis.total</field>
+        <field name="view_mode">tree,pivot,graph</field>
+        <field name="context">{}</field>
+        <field name="search_view_id" ref="invoice_sale_analysis_total_search"/>
+        <field name="help">Reporte de Ventas vs Facturas.</field>
     </record>
 
-    <record model="ir.ui.view" id="view_inventory_form_inherit_argi1" >
-        <field name="name">stock.inventory.tree.inherit</field>
-        <field name="model">stock.inventory</field>
-        <field name="inherit_id" ref="stock.view_inventory_form" />
-        <field name="arch" type="xml">
-            <field name="move_ids" position="after">
-                <group class="oe_subtotal_footer oe_right">
-                    <field name="cost_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                    
-                </group>
-                <group colspan="4">
-                </group>
-                <newline/>
-                <newline/>
-            </field>
-            <xpath expr="//field[@name='move_ids']/tree/field[@name='product_qty']" position="after">
-                <field name="cost_total"/>
-            </xpath> 
-        </field>
-    </record>
+    <menuitem action="invoice_sale_analysis_total_action" 
+              name="Analisis de Ventas vs Facturas" 
+                  parent="sale.menu_sale_report"
+                  id="invoice_sale_analysis_total_menu" sequence="700"/>
+
+
+        
+        
 
     </data>
-</openerp>
+</odoo>
